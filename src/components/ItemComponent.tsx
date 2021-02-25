@@ -12,7 +12,7 @@ export default function ItemComponent(
     const statusData = getData(status)
 
     return (
-        <tr className="border-b border-gray-200 hover:bg-gray-100">
+        <tr className="border-b border-gray-200 hover:bg-gray-100 even:bg-gray-50">
             <td className="py-3 px-6 text-left whitespace-nowrap">
                 <div className="flex items-center">
                     <span className="font-medium">{project}</span>
