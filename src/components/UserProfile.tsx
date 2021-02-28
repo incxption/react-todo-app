@@ -12,7 +12,7 @@ const RoundedImage = styled.img<{ isDisabled: boolean }>`
     ${tw`w-8 h-8 rounded-full border-gray-200 border transition-all`}
     ${props => props.isDisabled && css`
         filter: brightness(50%) grayscale(100%);
-        //transform: scale(0.7);
+
         ${tw`w-6 h-6`}
         &:hover {
             filter: brightness(90%) grayscale(10%);

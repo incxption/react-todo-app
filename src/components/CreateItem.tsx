@@ -46,8 +46,11 @@ export default function CreateItem({ addItem, nextId, allUsers }: Props) {
 
     const projectRef = useRef<HTMLInputElement>(null)
 
-    function createItem(keepInput: boolean) {
-        if (!keepInput) {
+    function createItem(flushInput: boolean) {
+        if (project.length === 0 || message.length === 0)
+            return
+
+        if (flushInput) {
             setProject("")
             setMessage("")
             setStatus(IStatus.OPEN)
@@ -64,7 +67,7 @@ export default function CreateItem({ addItem, nextId, allUsers }: Props) {
 
     function handlePress(event: React.KeyboardEvent<HTMLInputElement>) {
         if (event.key === "Enter") {
-            createItem(event.shiftKey)
+            createItem(!event.shiftKey)
         }
     }
 
@@ -116,7 +119,7 @@ export default function CreateItem({ addItem, nextId, allUsers }: Props) {
             </TableData>
             <TableData textCenter={true}>
                 <div className="flex item-center justify-center">
-                    <CreateButton onClick={() => createItem(false)}>
+                    <CreateButton onClick={() => createItem(true)}>
                         <span>Create</span>
                     </CreateButton>
                 </div>
