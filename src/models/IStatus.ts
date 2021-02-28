@@ -1,11 +1,18 @@
 enum IStatus {
-    OPEN,
-    IN_PROGRESS,
-    COMPLETED
+    OPEN = "OPEN",
+    IN_PROGRESS = "IN_PROGRESS",
+    COMPLETED = "COMPLETED"
 }
 
 export function next(status: IStatus): IStatus {
-    return (status.valueOf() + 1) % 3
+    switch (status) {
+        case IStatus.OPEN:
+            return IStatus.IN_PROGRESS
+        case IStatus.IN_PROGRESS:
+            return IStatus.COMPLETED
+        case IStatus.COMPLETED:
+            return IStatus.OPEN
+    }
 }
 
 export interface StatusData {

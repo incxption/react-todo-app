@@ -1,0 +1,52 @@
+# This file was generated based on ".graphqlconfig". Do not edit manually.
+
+schema {
+    query: Query
+    mutation: Mutation
+}
+
+type Mutation {
+    create(newItem: TodoInput!): Todo
+    update(id: ID!, update: TodoInput!): Todo
+}
+
+type Query {
+    items: [Todo!]!
+    users: [User!]!
+}
+
+type Todo {
+    id: ID!
+    project: String!
+    status: Status!
+    title: String!
+    users: [User!]!
+}
+
+type User {
+    icon: String!
+    id: ID!
+    name: String!
+}
+
+enum CacheControlScope {
+    PRIVATE
+    PUBLIC
+}
+
+enum Status {
+    COMPLETED
+    IN_PROGRESS
+    OPEN
+}
+
+input TodoInput {
+    project: String
+    status: Status
+    title: String
+    users: [ID!]
+}
+
+
+"The `Upload` scalar type represents a file upload."
+scalar Upload

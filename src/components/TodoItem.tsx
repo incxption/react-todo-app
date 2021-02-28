@@ -16,7 +16,7 @@ interface Props {
 export default function TodoItem(
     { item, allUsers, setStatus, modifyUsers }: Props
 ) {
-    const { project, message, users, status } = item
+    const { project, title, users, status } = item
 
     return (
         <TableRow>
@@ -27,7 +27,7 @@ export default function TodoItem(
             </TableData>
             <TableData>
                 <div className="flex items-center">
-                    <span>{message}</span>
+                    <span>{title}</span>
                 </div>
             </TableData>
             <TableData textCenter={true}>

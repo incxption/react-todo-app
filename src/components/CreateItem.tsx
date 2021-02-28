@@ -61,7 +61,7 @@ export default function CreateItem({ addItem, nextId, allUsers }: Props) {
         }
 
         addItem({
-            id: nextId, project, message, users, status
+            id: nextId, project, title: message, users, status
         })
     }
 

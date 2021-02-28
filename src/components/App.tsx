@@ -3,59 +3,74 @@ import IStatus from "../models/IStatus"
 import IUser from "../models/IUser"
 import TodoItem from "./TodoItem"
 import CreateItem from "./CreateItem"
-import { useState } from "react"
-
-const allUsers = [
-    {
-        id: 0,
-        name: "incxption",
-        icon: "https://avatars.githubusercontent.com/u/58042339?s=460&u=0f2edf4d4e13bcf90b671c84fc2d89e6071f0d9a&v=4"
-    }, {
-        id: 1,
-        name: "flaaaps",
-        icon: "https://avatars.githubusercontent.com/u/58341821?s=460&u=e97ba5f26844bc6de457a0a79f049951f80b1211&v=4"
-    }, {
-        id: 2,
-        name: "verityyt",
-        icon: "https://avatars.githubusercontent.com/u/58147038?s=460&u=e091c17da1e53ada760db5296f4a4b73799bf9c0&v=4"
-    }
-]
-
-const initialItems: ITodo[] = [
-    { id: 0, project: "Developing", message: "Learn React.js", status: IStatus.IN_PROGRESS, users: [] },
-    /*{ id: 1, project: "Developing", message: "Learn HTML/CSS/JS", status: IStatus.COMPLETED, users: [] },
-    { id: 2, project: "Projects", message: "Finish BetBetter", status: IStatus.OPEN, users: [] },
-    { id: 3, project: "School", message: "Deutsch Arbeitsauftrag Fabel", status: IStatus.OPEN, users: [] },
-    { id: 4, project: "School", message: "Physik Flughöhe geostationärer Satelliten", status: IStatus.COMPLETED, users: [] },*/
-]
+import { useMutation, useQuery } from "@apollo/client"
+import UsersQuery from "../graphql/UsersQuery"
+import ItemsQuery from "../graphql/ItemsQuery"
+import UpdateStatusMutation from "../graphql/UpdateStatusMutation"
+import UpdateUsersMutation from "../graphql/UpdateUsersMutation"
+import CreateItemMutation from "../graphql/CreateItemMutation"
 
 export default function App() {
-    const [items, setItems] = useState(initialItems)
+    const { loading: usersLoading, error: usersError, data: usersData } = useQuery(UsersQuery)
+    const { loading: itemsLoading, error: itemsError, data: itemsData, refetch: refetchItems } = useQuery(ItemsQuery)
+
+    const [updateStatus] = useMutation(UpdateStatusMutation)
+    const [updateUsers] = useMutation(UpdateUsersMutation)
+    const [createItem] = useMutation(CreateItemMutation)
+
+    if (usersError || itemsError) {
+        return (
+            <div
+                className="w-3/5 h-3/5 bg-red-200 shadow transition-all duration-200 rounded-md text-lg font-medium flex flex-col items-center justify-center">
+                <h1 className="text-xl font-semibold text-red-700">{usersError ? "Error while loading users" : "Error while loading items"}</h1>
+                <p className="text-red-600">{String(usersError ? usersError : itemsError).replace("Error: ", "")}</p>
+            </div>
+        )
+    }
+
+    if (usersLoading || itemsLoading) {
+        return (
+            <div
+                className="w-3/5 h-3/5 bg-purple-200 shadow transition-all duration-200 rounded-md text-lg font-medium flex flex-col items-center justify-center">
+                <h1 className="text-xl font-semibold text-purple-700">{usersLoading ? "Loading users..." : "Loading items..."}</h1>
+            </div>
+        )
+    }
+
+    const allUsers = usersData.users as IUser[]
+    const items = itemsData.items as ITodo[]
     const nextId = items.length
 
     function addItem(item: ITodo) {
-        setItems(prev => [...prev, item])
+        createItem({
+            variables: {
+                newItem: {
+                    project: item.project,
+                    title: item.title,
+                    users: item.users.map(it => it.id),
+                    status: item.status.valueOf()
+                }
+            }
+        })
+            .then(() => refetchItems())
+            .catch(error => console.error(error))
     }
 
     function setStatus(item: ITodo, next: IStatus) {
-        setItems(prev => {
-            const newState = [...prev]
-            newState.find(it => it.id === item.id)!!.status = next
-            return newState
-        })
+        updateStatus({ variables: { id: item.id, newStatus: next } })
+            .then(() => refetchItems())
+            .catch(error => console.error(error))
     }
 
     function modifyUsers(item: ITodo, user: IUser, enabled: boolean) {
-        setItems(prev => {
-            const newState = [...prev]
-            const users = newState.find(it => it.id === item.id)!!.users
-            if (enabled) {
-                users.push(user)
-            } else {
-                users.splice(users.indexOf(user), 1)
-            }
-            return newState
-        })
+        const newUsers = [...item.users]
+        if (enabled) newUsers.push(user)
+        else newUsers.splice(newUsers.indexOf(user), 1)
+
+        const userIds = newUsers.map(it => String(it.id))
+        updateUsers({ variables: { id: item.id, newUsers: userIds } })
+            .then(() => refetchItems())
+            .catch(error => console.error(error))
     }
 
     return (
