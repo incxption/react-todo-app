@@ -1,17 +1,22 @@
-import ITodo from "../models/ITodo";
-import UserProfile from "./UserProfile";
+import ITodo from "../models/ITodo"
+import UserProfile from "./UserProfile"
 import TableData from "./TableData"
 import TableRow from "./TableRow"
-import { getData } from "../models/Status";
+import Status from "./Status"
+import IStatus from "../models/IStatus"
+import IUser from "../models/IUser"
 
 interface Props {
     item: ITodo
+    allUsers: IUser[]
+    setStatus: (item: ITodo, next: IStatus) => void
+    modifyUsers: (item: ITodo, user: IUser, enabled: boolean) => void
 }
 
 export default function TodoItem(
-    { item: { project, message, users, status } }: Props
+    { item, allUsers, setStatus, modifyUsers }: Props
 ) {
-    const statusData = getData(status)
+    const { project, message, users, status } = item
 
     return (
         <TableRow>
@@ -27,15 +32,15 @@ export default function TodoItem(
             </TableData>
             <TableData textCenter={true}>
                 <div className="flex items-center justify-center">
-                    {users.map((value, index) => (
-                        <UserProfile user={value} isLast={index === users.length - 1}/>
-                    ))}
+                    {allUsers.map((value, index) => {
+                        const isDisabled = !users.find(it => it.id === value.id)
+                        const setDisabled = (disabled: boolean) => modifyUsers(item, value, !disabled)
+                        return <UserProfile user={value} isDisabled={isDisabled} setDisabled={setDisabled} isFirst={index === 0}/>
+                    })}
                 </div>
             </TableData>
             <TableData textCenter={true}>
-                <span className={`bg-${statusData.color}-200 text-${statusData.color}-600 py-1 px-3 rounded-full text-xs`}>
-                    {statusData.displayText}
-                </span>
+                <Status status={status} setStatus={next => setStatus(item, next)}/>
             </TableData>
             <TableData textCenter={true}>
                 <div className="flex item-center justify-center">
@@ -52,7 +57,7 @@ export default function TodoItem(
                                   d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
                         </svg>
                     </div>
-                    <div className="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
+                    <div className="w-4 transform hover:text-purple-500 hover:scale-110">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
                                   d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>

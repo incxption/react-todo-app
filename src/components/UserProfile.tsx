@@ -1,28 +1,43 @@
 import IUser from "../models/IUser"
 import tw, { styled } from "twin.macro"
+import { css } from "styled-components"
 
 interface UserComponentProps {
-    isLast: boolean
+    isFirst: boolean
+    isDisabled: boolean
+    setDisabled: (newState: boolean) => void
     user: IUser
 }
 
-const RoundedImage = styled.img`
-    ${tw`w-6 h-6 rounded-full border-gray-200 border transition-all`}
-    &:hover {
-        transform: scale(1.15);
+const RoundedImage = styled.img<{ isDisabled: boolean }>`
+    ${tw`w-8 h-8 rounded-full border-gray-200 border transition-all`}
+    ${props => props.isDisabled && css`
+        filter: brightness(50%) grayscale(100%);
+        //transform: scale(0.7);
+        ${tw`w-6 h-6`}
+        &:hover {
+            filter: brightness(90%) grayscale(10%);
+            cursor: pointer;
+        }
+    `}
+    ${props => !props.isDisabled && css`
         ${tw`shadow-md`}
-    }
+        &:hover {
+            transform: scale(1.15);
+            cursor: pointer;
+        }
+    `}
 `
 
-const StyledContainer = styled.div<{ isLast: boolean }>`
-    ${tw`w-6 h-6 inline-block`}
-    ${props => !props.isLast && tw`-m-1`}
+const StyledContainer = styled.div<{ isFirst: boolean }>`
+    ${tw`w-8 h-8 inline-block relative flex items-center justify-center`}
+    ${props => !props.isFirst && tw`-ml-2`}
 `
 
-export default function UserProfile({ isLast, user: { icon, name } }: UserComponentProps) {
+export default function UserProfile({ isFirst, isDisabled, setDisabled, user: { icon, name } }: UserComponentProps) {
     return (
-        <StyledContainer isLast={isLast}>
-            <RoundedImage src={icon} alt={name} title={name}/>
+        <StyledContainer isFirst={isFirst}>
+            <RoundedImage isDisabled={isDisabled} onClick={() => setDisabled(!isDisabled)} src={icon} alt={name} title={name}/>
         </StyledContainer>
     )
 }
