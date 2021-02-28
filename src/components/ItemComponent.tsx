@@ -1,41 +1,43 @@
 import Item from "../models/Item";
 import UserComponent from "./UserComponent";
+import TableData from "./TableData"
+import TableRow from "./TableRow"
 import { getData } from "../models/Status";
 
-interface ItemComponentProps {
+interface Props {
     item: Item
 }
 
 export default function ItemComponent(
-    { item: { project, message, users, status } }: ItemComponentProps
+    { item: { project, message, users, status } }: Props
 ) {
     const statusData = getData(status)
 
     return (
-        <tr className="border-b border-gray-200 hover:bg-gray-100 even:bg-gray-50">
-            <td className="py-3 px-6 text-left whitespace-nowrap">
+        <TableRow>
+            <TableData noWrap={true}>
                 <div className="flex items-center">
                     <span className="font-medium">{project}</span>
                 </div>
-            </td>
-            <td className="py-3 px-6 text-left">
+            </TableData>
+            <TableData>
                 <div className="flex items-center">
                     <span>{message}</span>
                 </div>
-            </td>
-            <td className="py-3 px-6 text-center">
+            </TableData>
+            <TableData textCenter={true}>
                 <div className="flex items-center justify-center">
                     {users.map((value, index) => (
-                        <UserComponent user={value} isFirst={index === 0}/>
+                        <UserComponent user={value} isLast={index === users.length - 1}/>
                     ))}
                 </div>
-            </td>
-            <td className="py-3 px-6 text-center">
+            </TableData>
+            <TableData textCenter={true}>
                 <span className={`bg-${statusData.color}-200 text-${statusData.color}-600 py-1 px-3 rounded-full text-xs`}>
                     {statusData.displayText}
                 </span>
-            </td>
-            <td className="py-3 px-6 text-center">
+            </TableData>
+            <TableData textCenter={true}>
                 <div className="flex item-center justify-center">
                     <div className="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -57,7 +59,7 @@ export default function ItemComponent(
                         </svg>
                     </div>
                 </div>
-            </td>
-        </tr>
+            </TableData>
+        </TableRow>
     )
 }

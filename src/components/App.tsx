@@ -20,7 +20,7 @@ const items: Item[] = [
     { id: 1, project: "Developing", message: "Learn HTML/CSS/JS", status: Status.COMPLETED, users: [me] },
     { id: 2, project: "Projects", message: "Finish BetBetter", status: Status.OPEN, users: [me, juli] },
     { id: 3, project: "School", message: "Deutsch Arbeitsauftrag Fabel", status: Status.OPEN, users: [me] },
-    { id: 4, project: "School", message: "Physik Flughöhe geostationärer Satelliten", status: Status.COMPLETED, users: [me, juli] },
+    { id: 4, project: "School", message: "Physik Flughöhe geostationärer Satelliten", status: Status.COMPLETED, users: [me, juli, me] },
 ]
 
 export default function App() {

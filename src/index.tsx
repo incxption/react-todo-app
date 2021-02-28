@@ -1,8 +1,14 @@
-import React from "react";
+import React from "react"
 import ReactDOM from "react-dom"
-import App from "./components/App";
+import { GlobalStyles } from "twin.macro"
+import App from "./components/App"
 import "./index.css"
+//import GlobalStylesComponent from "./components/GlobalStyles"
 
-export const APP_NAME = "React Todo App"
-
-ReactDOM.render(<App/>, document.getElementById("root"))
+ReactDOM.render(
+    <>
+        <GlobalStyles/>
+        <App/>
+    </>,
+    document.getElementById("root")
+)
