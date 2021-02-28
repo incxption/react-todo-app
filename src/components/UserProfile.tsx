@@ -1,9 +1,9 @@
-import User from "../models/User"
+import IUser from "../models/IUser"
 import tw, { styled } from "twin.macro"
 
 interface UserComponentProps {
     isLast: boolean
-    user: User
+    user: IUser
 }
 
 const RoundedImage = styled.img`
@@ -19,7 +19,7 @@ const StyledContainer = styled.div<{ isLast: boolean }>`
     ${props => !props.isLast && tw`-m-1`}
 `
 
-export default function UserComponent({ isLast, user: { icon, name } }: UserComponentProps) {
+export default function UserProfile({ isLast, user: { icon, name } }: UserComponentProps) {
     return (
         <StyledContainer isLast={isLast}>
             <RoundedImage src={icon} alt={name} title={name}/>

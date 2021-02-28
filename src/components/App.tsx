@@ -1,21 +1,21 @@
-import Item from "../models/Item";
+import ITodo from "../models/ITodo";
 import Status from "../models/Status";
-import User from "../models/User";
-import ItemComponent from "./ItemComponent";
+import IUser from "../models/IUser";
+import TodoItem from "./TodoItem";
 
-const me: User = {
+const me: IUser = {
     id: 0,
     name: "incxption",
     icon: "https://avatars.githubusercontent.com/u/58042339?s=460&u=0f2edf4d4e13bcf90b671c84fc2d89e6071f0d9a&v=4"
 }
 
-const juli: User = {
+const juli: IUser = {
     id: 0,
     name: "flaaps",
     icon: "https://avatars.githubusercontent.com/u/58341821?s=460&u=e97ba5f26844bc6de457a0a79f049951f80b1211&v=4"
 }
 
-const items: Item[] = [
+const items: ITodo[] = [
     { id: 0, project: "Developing", message: "Learn React.js", status: Status.IN_PROGRESS, users: [me] },
     { id: 1, project: "Developing", message: "Learn HTML/CSS/JS", status: Status.COMPLETED, users: [me] },
     { id: 2, project: "Projects", message: "Finish BetBetter", status: Status.OPEN, users: [me, juli] },
@@ -37,7 +37,7 @@ export default function App() {
                     </tr>
                 </thead>
                 <tbody className="text-gray-600 text-sm font-normal">
-                    {items.map(item => (<ItemComponent item={item}/>))}
+                    {items.map(item => (<TodoItem item={item}/>))}
                 </tbody>
             </table>
         </div>

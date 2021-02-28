@@ -1,14 +1,14 @@
-import Item from "../models/Item";
-import UserComponent from "./UserComponent";
+import ITodo from "../models/ITodo";
+import UserProfile from "./UserProfile";
 import TableData from "./TableData"
 import TableRow from "./TableRow"
 import { getData } from "../models/Status";
 
 interface Props {
-    item: Item
+    item: ITodo
 }
 
-export default function ItemComponent(
+export default function TodoItem(
     { item: { project, message, users, status } }: Props
 ) {
     const statusData = getData(status)
@@ -28,7 +28,7 @@ export default function ItemComponent(
             <TableData textCenter={true}>
                 <div className="flex items-center justify-center">
                     {users.map((value, index) => (
-                        <UserComponent user={value} isLast={index === users.length - 1}/>
+                        <UserProfile user={value} isLast={index === users.length - 1}/>
                     ))}
                 </div>
             </TableData>

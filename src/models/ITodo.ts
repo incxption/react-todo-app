@@ -1,7 +1,7 @@
-import Member from "./User.js";
+import Member from "./IUser.js";
 import Status from "./Status.js";
 
-export default interface Item {
+export default interface ITodo {
     id: number
     project: string
     message: string
