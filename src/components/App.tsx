@@ -23,10 +23,10 @@ const allUsers = [
 
 const initialItems: ITodo[] = [
     { id: 0, project: "Developing", message: "Learn React.js", status: IStatus.IN_PROGRESS, users: [] },
-    { id: 1, project: "Developing", message: "Learn HTML/CSS/JS", status: IStatus.COMPLETED, users: [] },
+    /*{ id: 1, project: "Developing", message: "Learn HTML/CSS/JS", status: IStatus.COMPLETED, users: [] },
     { id: 2, project: "Projects", message: "Finish BetBetter", status: IStatus.OPEN, users: [] },
     { id: 3, project: "School", message: "Deutsch Arbeitsauftrag Fabel", status: IStatus.OPEN, users: [] },
-    { id: 4, project: "School", message: "Physik Flughöhe geostationärer Satelliten", status: IStatus.COMPLETED, users: [] },
+    { id: 4, project: "School", message: "Physik Flughöhe geostationärer Satelliten", status: IStatus.COMPLETED, users: [] },*/
 ]
 
 export default function App() {
@@ -71,7 +71,9 @@ export default function App() {
                     </tr>
                 </thead>
                 <tbody className="text-gray-600 text-sm font-normal">
-                    {items.map(item => (<TodoItem allUsers={allUsers} modifyUsers={modifyUsers} setStatus={setStatus} item={item}/>))}
+                    {items.map(item => (
+                        <TodoItem key={item.id} allUsers={allUsers} modifyUsers={modifyUsers} setStatus={setStatus} item={item}/>)
+                    )}
                     <CreateItem allUsers={allUsers} addItem={addItem} nextId={nextId}/>
                 </tbody>
             </table>

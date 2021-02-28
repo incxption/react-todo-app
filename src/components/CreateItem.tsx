@@ -54,12 +54,13 @@ export default function CreateItem({ addItem, nextId, allUsers }: Props) {
             setStatus(IStatus.OPEN)
             setUsers([])
             projectRef.current?.focus()
+        } else {
+            setUsers([...users])
         }
 
-        const item: ITodo = {
-            project, message, id: nextId, users, status
-        }
-        addItem(item)
+        addItem({
+            id: nextId, project, message, users, status
+        })
     }
 
     function handlePress(event: React.KeyboardEvent<HTMLInputElement>) {
@@ -107,7 +108,7 @@ export default function CreateItem({ addItem, nextId, allUsers }: Props) {
                                 return newState
                             })
                         }
-                        return <UserProfile isFirst={index === 0} isDisabled={isDisabled} setDisabled={setDisabled} user={user}/>
+                        return <UserProfile key={user.id} isFirst={index === 0} isDisabled={isDisabled} setDisabled={setDisabled} user={user}/>
                     })}
                 </div>
             </TableData>

@@ -35,7 +35,7 @@ export default function TodoItem(
                     {allUsers.map((value, index) => {
                         const isDisabled = !users.find(it => it.id === value.id)
                         const setDisabled = (disabled: boolean) => modifyUsers(item, value, !disabled)
-                        return <UserProfile user={value} isDisabled={isDisabled} setDisabled={setDisabled} isFirst={index === 0}/>
+                        return <UserProfile key={value.id} user={value} isDisabled={isDisabled} setDisabled={setDisabled} isFirst={index === 0}/>
                     })}
                 </div>
             </TableData>
