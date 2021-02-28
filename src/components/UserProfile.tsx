@@ -1,8 +1,7 @@
 import IUser from "../models/IUser"
-import tw, { styled } from "twin.macro"
-import { css } from "styled-components"
+import tw, { styled, css } from "twin.macro"
 
-interface UserComponentProps {
+interface Props {
     isFirst: boolean
     isDisabled: boolean
     setDisabled: (newState: boolean) => void
@@ -34,7 +33,7 @@ const StyledContainer = styled.div<{ isFirst: boolean }>`
     ${props => !props.isFirst && tw`-ml-2`}
 `
 
-export default function UserProfile({ isFirst, isDisabled, setDisabled, user: { icon, name } }: UserComponentProps) {
+export default function UserProfile({ isFirst, isDisabled, setDisabled, user: { icon, name } }: Props) {
     return (
         <StyledContainer isFirst={isFirst}>
             <RoundedImage isDisabled={isDisabled} onClick={() => setDisabled(!isDisabled)} src={icon} alt={name} title={name}/>

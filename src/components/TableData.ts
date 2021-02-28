@@ -1,5 +1,4 @@
-import tw from "twin.macro"
-import styled from "styled-components"
+import tw, { styled } from "twin.macro"
 
 interface Props {
     textCenter?: boolean
